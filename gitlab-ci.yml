@@ -1,0 +1,22 @@
+image: python:3.12
+
+stages:
+  - build
+  - test
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+
+build-job:
+  stage: build
+  script:
+    - echo "Checking Python code..."
+    - python -m py_compile calculator.py test_calculator.py
+    - echo "Build OK"
+
+test-job:
+  stage: test
+  script:
+    - pip install pytest
+    - pytest -v
